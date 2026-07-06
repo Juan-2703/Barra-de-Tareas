@@ -1,4 +1,3 @@
-// src/screens/HomeScreen.tsx
 import React, { useCallback, useState, useMemo } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
