@@ -1,4 +1,3 @@
-// src/components/TaskItem.tsx
 import React, { useCallback } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Checkbox from 'expo-checkbox';
@@ -11,7 +10,7 @@ interface Props {
   onToggleComplete: (id: string) => void;
   onEdit: (id: string) => void;
   onDeleteRequest: (id: string) => void;
-  onPress: (tarea: Task) => void; // <--- Nueva prop para abrir los detalles
+  onPress: (tarea: Task) => void;
 }
 
 export const TaskItem: React.FC<Props> = ({ 
@@ -27,7 +26,6 @@ export const TaskItem: React.FC<Props> = ({
   const handleEdit = useCallback(() => onEdit(tarea.id), [tarea.id, onEdit]);
   const handleDeleteRequest = useCallback(() => onDeleteRequest(tarea.id), [tarea.id, onDeleteRequest]);
 
-  // Al presionar la tarjeta, ejecutamos la prop onPress
   const handlePress = useCallback(() => onPress(tarea), [tarea, onPress]);
 
   return (
