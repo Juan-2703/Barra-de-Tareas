@@ -1,4 +1,3 @@
-// src/components/CustomAlert.tsx
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
 import { useTheme } from '../context/ThemeContext';
@@ -29,12 +28,10 @@ export const CustomAlert: React.FC<Props> = ({ visible, title, message, onClose,
           <Text style={[styles.message, { color: theme.textSecondary }]}>{message}</Text>
           
           <View style={styles.buttonContainer}>
-            {/* Botón Cerrar (siempre visible) */}
             <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={onClose}>
               <Text style={[styles.buttonText, { color: theme.text }]}>Cerrar</Text>
             </TouchableOpacity>
 
-            {/* Botón Confirmar (solo si onConfirm existe y no está oculto) */}
             {onConfirm && !hideConfirmButton && (
               <TouchableOpacity style={[styles.button, styles.confirmButton, { backgroundColor: theme.header }]} onPress={onConfirm}>
                 <Text style={[styles.buttonText, { color: '#fff' }]}>Eliminar</Text>
