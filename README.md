@@ -1,6 +1,6 @@
 <div align="center" style="background-color: #2f4f4f; padding: 30px; border-radius: 12px; width: 100%;">
 
-<img src="./src/assets/icon.png" alt="TaskBar Logo" width="150" />
+<img src="./TaskBar/src/assets/icon.png" alt="TaskBar Logo" width="150" />
 
 <h1 style="color: #ffffff; margin-top: 10px;">TaskBar</h1>
 
