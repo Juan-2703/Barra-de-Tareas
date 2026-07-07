@@ -1,4 +1,3 @@
-// src/screens/CalendarScreen.tsx
 import React, { useState, useCallback, useMemo } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -13,7 +12,6 @@ export const CalendarScreen = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showPicker, setShowPicker] = useState(false);
 
-  // useMemo para filtrar solo cuando tareas o la fecha cambien
   const tareasDelDia = useMemo(() => {
     return tareas.filter((t) => {
       if (!t.fechaVencimiento) return false;
