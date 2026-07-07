@@ -1,4 +1,3 @@
-// src/screens/CreateTaskScreen.tsx
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -46,10 +45,6 @@ export const CreateTaskScreen = () => {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background, flex: 1 }]}>
-      {/* 
-        Envolvemos el ScrollView en un View contenedor.
-        Cuando la alerta está visible, desactivamos la interacción táctil y evitamos que se superponga.
-      */}
       <View style={{ flex: 1 }} pointerEvents={alert.visible ? 'none' : 'auto'}>
         <ScrollView 
           contentContainerStyle={[styles.scrollContent, { flexGrow: 1 }]}
