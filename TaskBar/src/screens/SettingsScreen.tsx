@@ -15,7 +15,7 @@ export const SettingsScreen = () => {
           <Switch
             value={isDark}
             onValueChange={toggleTheme}
-            trackColor={{ false: '#767577', true: '#007AFF' }}
+            trackColor={{ false: '#767577', true: '#004d04' }}
             thumbColor={isDark ? '#fff' : '#f4f3f4'}
           />
         </View>

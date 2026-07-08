@@ -39,7 +39,7 @@ export const TaskItem: React.FC<Props> = ({
           <Checkbox
             value={tarea.completada}
             onValueChange={handleToggle}
-            color={tarea.completada ? '#007AFF' : undefined}
+            color={tarea.completada ? '#008829' : undefined}
             style={styles.checkbox}
           />
           <Text
@@ -51,7 +51,7 @@ export const TaskItem: React.FC<Props> = ({
         </View>
         <View style={styles.actionsContainer}>
           <TouchableOpacity onPress={handleEdit} style={styles.actionButton}>
-            <MaterialIcons name="edit" size={22} color="#4CAF50" />
+            <MaterialIcons name="edit" size={22} color="#2585ac" />
           </TouchableOpacity>
           <TouchableOpacity onPress={handleDeleteRequest} style={styles.actionButton}>
             <MaterialIcons name="delete" size={22} color="#f44336" />
@@ -65,7 +65,7 @@ export const TaskItem: React.FC<Props> = ({
           </Text>
         )}
         {tarea.fechaVencimiento && (
-          <Text style={styles.date}>📅 {tarea.fechaVencimiento.toLocaleDateString()}</Text>
+          <Text style={styles.date}>Fecha Limite: {tarea.fechaVencimiento.toLocaleDateString()}</Text>
         )}
       </View>
     </TouchableOpacity>
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   title: { fontSize: 17, fontWeight: '600', flex: 1 },
   titleCompleted: { textDecorationLine: 'line-through', color: '#999' },
   actionsContainer: { flexDirection: 'row', gap: 8 },
-  actionButton: { padding: 6, backgroundColor: 'rgba(0,0,0,0.05)', borderRadius: 8 },
+  actionButton: { padding: 6, backgroundColor: 'transparent', borderRadius: 8 },
   bottomSection: { marginTop: 2, paddingLeft: 34 },
   description: { fontSize: 14, marginBottom: 6, lineHeight: 20 },
   date: { fontSize: 13, color: '#007AFF', marginTop: 2 },

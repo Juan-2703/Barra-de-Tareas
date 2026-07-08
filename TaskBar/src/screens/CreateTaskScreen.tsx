@@ -76,6 +76,7 @@ export const CreateTaskScreen = () => {
               value={fecha || new Date()}
               mode="date"
               display="default"
+              minimumDate={new Date()}
               onChange={(_, date) => {
                 setShowPicker(false);
                 if (date) setFecha(date);

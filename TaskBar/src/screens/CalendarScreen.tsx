@@ -44,12 +44,12 @@ export const CalendarScreen = () => {
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
       <View style={[styles.header, { backgroundColor: theme.card, borderColor: theme.border }]}>
-        <Text style={[styles.headerTitle, { color: theme.text }]}>📅 Selecciona una fecha</Text>
+        <Text style={[styles.headerTitle, { color: theme.text }]}>Selecciona una fecha</Text>
         <TouchableOpacity
           style={[styles.dateButton, { backgroundColor: theme.card, borderColor: theme.border }]}
           onPress={() => setShowPicker(true)}
         >
-          <MaterialIcons name="calendar-today" size={24} color="#007AFF" />
+          <MaterialIcons name="calendar-today" size={24} color="#006b1b" />
           <Text style={[styles.dateText, { color: theme.text }]}>{formatDate(selectedDate)}</Text>
         </TouchableOpacity>
       </View>

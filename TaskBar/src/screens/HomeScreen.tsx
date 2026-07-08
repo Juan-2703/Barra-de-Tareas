@@ -115,7 +115,7 @@ export const HomeScreen = () => {
         title={detailsAlert.tarea?.titulo || 'Detalles'}
         message={
           detailsAlert.tarea
-            ? `Descripción:\n${detailsAlert.tarea.descripcion || 'Sin descripción'}\n\nFecha de vencimiento:\n${detailsAlert.tarea.fechaVencimiento ? detailsAlert.tarea.fechaVencimiento.toLocaleDateString() : 'Sin fecha'}`
+            ? `Descripción:\n${detailsAlert.tarea.descripcion || 'Sin descripción'}\n\nFecha Limite:\n${detailsAlert.tarea.fechaVencimiento ? detailsAlert.tarea.fechaVencimiento.toLocaleDateString() : 'Sin fecha'}`
             : ''
         }
         onClose={handleCloseDetails}

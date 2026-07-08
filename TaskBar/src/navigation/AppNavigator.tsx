@@ -38,7 +38,7 @@ function MainTabs() {
           else if (route.name === 'Ajustes') iconName = 'settings';
           return <MaterialIcons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: '#007AFF',
+        tabBarActiveTintColor: '#007000',
         tabBarInactiveTintColor: theme.textSecondary,
         tabBarStyle: { backgroundColor: theme.background, borderTopColor: theme.border },
         headerShown: false,

@@ -1,13 +1,13 @@
 import React, { createContext, useState, useContext, ReactNode } from 'react';
 
 const lightTheme = {
-  background: '#f8f9fa',
+  background: '#f8faf9',
   card: '#ffffff',
   text: '#1a1a1a',
   textSecondary: '#6c757d',
   header: '#5d8a6e',
   border: '#e9ecef',
-  fab: '#5d8a6e',
+  fab: '#00702b',
   fabText: '#ffffff',
 };
 
@@ -18,7 +18,7 @@ const darkTheme = {
   textSecondary: '#a0a0a0',
   header: '#1a2e22',
   border: '#333333',
-  fab: '#4a7a5a',
+  fab: '#03521d',
   fabText: '#ffffff',
 };
 
