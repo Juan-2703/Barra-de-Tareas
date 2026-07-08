@@ -15,6 +15,13 @@
 
 ---
 
+### Que es TaskBar?
+
+**TaskBar** es una aplicación móvil para la gestión de tareas personales, desarrollada con **React Native** y **Expo**.
+Permite crear, editar, eliminar y marcar tareas como completadas. Incluye un calendario integrado para visualizar tareas por fecha de vencimiento y un modo oscuro para adaptarse a las preferencias del usuario.
+
+---
+
 
 # 1. Comandos iniciales para levantar el proyecto
 
