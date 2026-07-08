@@ -22,7 +22,7 @@
 ## 1.1. Clonar el repositorio (Si usas URL)
 
 ```bash
-git clone <url-del-repositorio>
+git clone https://github.com/Juan-2703/Barra-de-Tareas.git
 cd Barra-de-Tareas
 cd TaskBar
 ```
