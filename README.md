@@ -23,7 +23,7 @@
 
 ```bash
 git clone <url-del-repositorio>
-
+cd Barra-de-Tareas
 cd TaskBar
 ```
 
