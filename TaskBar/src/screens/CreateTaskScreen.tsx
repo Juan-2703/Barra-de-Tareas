@@ -65,7 +65,7 @@ export const CreateTaskScreen = () => {
               style={[styles.dateButton, { backgroundColor: theme.card, borderColor: theme.border }]}
               onPress={() => setShowPicker(true)}
             >
-              <MaterialIcons name="calendar-today" size={20} color="#007AFF" />
+              <MaterialIcons name="calendar-today" size={20} color="#006b1b" />
               <Text style={[styles.dateButtonText, { color: theme.text }]}>
                 {fecha ? fecha.toLocaleDateString() : 'Seleccionar fecha'}
               </Text>
