@@ -7,7 +7,7 @@ const lightTheme = {
   textSecondary: '#6c757d',
   header: '#5d8a6e',
   border: '#e9ecef',
-  fab: '#00702b',
+  fab: '#5d8a6e',
   fabText: '#ffffff',
 };
 
@@ -18,7 +18,7 @@ const darkTheme = {
   textSecondary: '#a0a0a0',
   header: '#1a2e22',
   border: '#333333',
-  fab: '#03521d',
+  fab: '#4a7a5a',
   fabText: '#ffffff',
 };
 

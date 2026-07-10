@@ -1,27 +1,36 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { useTheme } from '../context/ThemeContext';
+import { useFontSize } from '../context/FontSizeContext';
+import { getFontStyles } from '../utils/fontStyles';
 
-interface Props {
+interface CustomButtonProps {
   title: string;
   onPress: () => void;
   variant?: 'primary' | 'secondary';
 }
 
-export const CustomButton: React.FC<Props> = ({ title, onPress, variant = 'primary' }) => {
+export const CustomButton: React.FC<CustomButtonProps> = ({ title, onPress, variant = 'primary' }) => {
   const { theme } = useTheme();
-  const isSecondary = variant === 'secondary';
+  const { fontSize } = useFontSize();
+  const fontStyles = getFontStyles(fontSize);
+
   return (
     <TouchableOpacity
       style={[
         styles.button,
-        isSecondary
-          ? [styles.secondaryButton, { backgroundColor: theme.card, borderColor: theme.border }]
-          : [styles.primaryButton, { backgroundColor: theme.header }],
+        variant === 'secondary'
+          ? { backgroundColor: theme.card, borderColor: theme.border }
+          : { backgroundColor: '#5d8a6e' }, // <--- VERDE DE LA APP
       ]}
       onPress={onPress}
     >
-      <Text style={isSecondary ? [styles.secondaryText, { color: theme.text }] : [styles.primaryText, { color: '#fff' }]}>
+      <Text
+        style={[
+          variant === 'secondary' ? styles.secondaryText : styles.primaryText,
+          { fontSize: fontStyles.button.fontSize }
+        ]}
+      >
         {title}
       </Text>
     </TouchableOpacity>
@@ -29,9 +38,19 @@ export const CustomButton: React.FC<Props> = ({ title, onPress, variant = 'prima
 };
 
 const styles = StyleSheet.create({
-  button: { borderRadius: 12, paddingVertical: 14, alignItems: 'center', justifyContent: 'center', marginTop: 10 },
-  primaryButton: { borderWidth: 0 },
-  secondaryButton: { borderWidth: 1 },
-  primaryText: { fontWeight: 'bold', fontSize: 16 },
-  secondaryText: { fontWeight: 'bold', fontSize: 16 },
+  button: {
+    borderRadius: 12,
+    paddingVertical: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+  },
+  primaryText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  secondaryText: {
+    color: '#333',
+    fontWeight: 'bold',
+  },
 });

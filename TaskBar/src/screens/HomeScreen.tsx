@@ -3,6 +3,8 @@ import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native
 import { useNavigation } from '@react-navigation/native';
 import { useTasks } from '../hooks/useTasks';
 import { useTheme } from '../context/ThemeContext';
+import { useFontSize } from '../context/FontSizeContext';
+import { getFontStyles } from '../utils/fontStyles';
 import { MaterialIcons } from '@expo/vector-icons';
 import { TaskItem } from '../components/TaskItem';
 import { CustomAlert } from '../components/CustomAlert';
@@ -14,6 +16,8 @@ export const HomeScreen = () => {
   const { tareas, toggleComplete, deleteTask } = useTasks();
   const navigation = useNavigation<HomeScreenNavigationProp>();
   const { theme } = useTheme();
+  const { fontSize } = useFontSize();
+  const fontStyles = getFontStyles(fontSize);
 
   const [deleteAlert, setDeleteAlert] = useState<{
     visible: boolean;
@@ -29,6 +33,8 @@ export const HomeScreen = () => {
   const tareasOrdenadas = useMemo(() => {
     return [...tareas].sort((a, b) => b.fechaCreacion.getTime() - a.fechaCreacion.getTime());
   }, [tareas]);
+
+  const currentFontSize = fontStyles.title.fontSize;
 
   const handleDeleteRequest = useCallback((id: string) => {
     const tarea = tareas.find((t) => t.id === id);
@@ -76,36 +82,42 @@ export const HomeScreen = () => {
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
       <View style={[styles.header, { backgroundColor: theme.header, paddingTop: 40 }]}>
-        <Text style={[styles.headerTitle, { color: '#fff' }]}>Mis Tareas</Text>
+        <Text style={[styles.headerTitle, { color: '#fff', fontSize: currentFontSize + 10 }]}>
+          Mis Tareas
+        </Text>
       </View>
-      <FlatList
-        data={tareasOrdenadas}
-        keyExtractor={(item) => item.id}
-        extraData={tareasOrdenadas}
-        renderItem={renderItem}
-        getItemLayout={(data, index) => ({
-          length: 80,
-          offset: 80 * index,
-          index,
-        })}
-        contentContainerStyle={[styles.listContent, { paddingTop: 20 }]}
-        ListEmptyComponent={
-          <View style={styles.emptyContainer}>
-            <Text style={[styles.emptyText, { color: theme.textSecondary }]}>¡No hay tareas aún! Crea una nueva.</Text>
-          </View>
-        }
-      />
+
+      {tareasOrdenadas.length === 0 ? (
+        <View style={[styles.emptyStateContainer, { backgroundColor: theme.background }]}>
+          <MaterialIcons name="checklist" size={60} color={theme.textSecondary} />
+          <Text style={[styles.emptyStateTitle, { color: theme.text, fontSize: currentFontSize + 4 }]}>
+            ¡Nada por hacer!
+          </Text>
+          <Text style={[styles.emptyStateSubtitle, { color: theme.textSecondary, fontSize: currentFontSize }]}>
+            Agrega una tarea tocando el botón verde.
+          </Text>
+        </View>
+      ) : (
+        <FlatList
+          data={tareasOrdenadas}
+          keyExtractor={(item) => item.id}
+          extraData={tareasOrdenadas}
+          renderItem={renderItem}
+          contentContainerStyle={[styles.listContent, { paddingTop: 20, paddingBottom: 20 }]}
+        />
+      )}
+
       <TouchableOpacity
-        style={[styles.fab, { backgroundColor: theme.fab }]}
+        style={[styles.fab, { backgroundColor: '#5d8a6e' }]}
         onPress={() => navigation.navigate('CreateTask')}
       >
-        <MaterialIcons name="add" size={30} color={theme.fabText} />
+        <MaterialIcons name="add" size={30} color="#fff" />
       </TouchableOpacity>
 
       <CustomAlert
         visible={deleteAlert.visible}
         title="Eliminar tarea"
-        message={`¿Estás seguro de que quieres eliminar "${deleteAlert.taskTitle}" ?`}
+        message={`¿Estás seguro de que quieres eliminar "${deleteAlert.taskTitle}"?`}
         onClose={handleCancelDelete}
         onConfirm={handleConfirmDelete}
       />
@@ -115,7 +127,7 @@ export const HomeScreen = () => {
         title={detailsAlert.tarea?.titulo || 'Detalles'}
         message={
           detailsAlert.tarea
-            ? `Descripción:\n${detailsAlert.tarea.descripcion || 'Sin descripción'}\n\nFecha Limite:\n${detailsAlert.tarea.fechaVencimiento ? detailsAlert.tarea.fechaVencimiento.toLocaleDateString() : 'Sin fecha'}`
+            ? `Descripción:\n${detailsAlert.tarea.descripcion || 'Sin descripción'}\n\nFecha de vencimiento:\n${detailsAlert.tarea.fechaVencimiento ? detailsAlert.tarea.fechaVencimiento.toLocaleDateString() : 'Sin fecha'}`
             : ''
         }
         onClose={handleCloseDetails}
@@ -128,10 +140,27 @@ export const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   header: { paddingHorizontal: 20, paddingBottom: 15 },
-  headerTitle: { fontSize: 28, fontWeight: 'bold' },
-  listContent: { paddingHorizontal: 20, paddingBottom: 20 },
-  emptyContainer: { alignItems: 'center', marginTop: 50 },
-  emptyText: { fontSize: 16, textAlign: 'center' },
+  headerTitle: { fontWeight: 'bold' },
+  listContent: { paddingHorizontal: 20 },
+  
+  // Estilos para el estado vacío (centrado en la pantalla)
+  emptyStateContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 30,
+  },
+  emptyStateTitle: {
+    fontWeight: 'bold',
+    marginTop: 20,
+    textAlign: 'center',
+  },
+  emptyStateSubtitle: {
+    marginTop: 10,
+    textAlign: 'center',
+    lineHeight: 24,
+  },
+  
   fab: {
     position: 'absolute',
     bottom: 30,

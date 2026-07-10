@@ -4,6 +4,8 @@ import Checkbox from 'expo-checkbox';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Task } from '../types/Task';
 import { useTheme } from '../context/ThemeContext';
+import { useFontSize } from '../context/FontSizeContext';
+import { getFontStyles } from '../utils/fontStyles';
 
 interface Props {
   tarea: Task;
@@ -13,19 +15,14 @@ interface Props {
   onPress: (tarea: Task) => void;
 }
 
-export const TaskItem: React.FC<Props> = ({ 
-  tarea, 
-  onToggleComplete, 
-  onEdit, 
-  onDeleteRequest,
-  onPress 
-}) => {
+export const TaskItem: React.FC<Props> = ({ tarea, onToggleComplete, onEdit, onDeleteRequest, onPress }) => {
   const { theme } = useTheme();
+  const { fontSize } = useFontSize();
+  const fontStyles = getFontStyles(fontSize);
 
   const handleToggle = useCallback(() => onToggleComplete(tarea.id), [tarea.id, onToggleComplete]);
   const handleEdit = useCallback(() => onEdit(tarea.id), [tarea.id, onEdit]);
   const handleDeleteRequest = useCallback(() => onDeleteRequest(tarea.id), [tarea.id, onDeleteRequest]);
-
   const handlePress = useCallback(() => onPress(tarea), [tarea, onPress]);
 
   return (
@@ -39,11 +36,15 @@ export const TaskItem: React.FC<Props> = ({
           <Checkbox
             value={tarea.completada}
             onValueChange={handleToggle}
-            color={tarea.completada ? '#008829' : undefined}
+            color={tarea.completada ? '#007AFF' : undefined}
             style={styles.checkbox}
           />
           <Text
-            style={[styles.title, { color: theme.text }, tarea.completada && styles.titleCompleted]}
+            style={[
+              styles.title, 
+              { color: theme.text, fontSize: fontStyles.title.fontSize },
+              tarea.completada && styles.titleCompleted
+            ]}
             numberOfLines={1}
           >
             {tarea.titulo}
@@ -51,7 +52,7 @@ export const TaskItem: React.FC<Props> = ({
         </View>
         <View style={styles.actionsContainer}>
           <TouchableOpacity onPress={handleEdit} style={styles.actionButton}>
-            <MaterialIcons name="edit" size={22} color="#2585ac" />
+            <MaterialIcons name="edit" size={22} color="#4CAF50" />
           </TouchableOpacity>
           <TouchableOpacity onPress={handleDeleteRequest} style={styles.actionButton}>
             <MaterialIcons name="delete" size={22} color="#f44336" />
@@ -60,12 +61,14 @@ export const TaskItem: React.FC<Props> = ({
       </View>
       <View style={styles.bottomSection}>
         {tarea.descripcion && (
-          <Text style={[styles.description, { color: theme.textSecondary }]} numberOfLines={3}>
+          <Text style={[styles.description, { color: theme.textSecondary, fontSize: fontStyles.body.fontSize }]} numberOfLines={3}>
             {tarea.descripcion}
           </Text>
         )}
         {tarea.fechaVencimiento && (
-          <Text style={styles.date}>Fecha Limite: {tarea.fechaVencimiento.toLocaleDateString()}</Text>
+          <Text style={[styles.date, { fontSize: fontStyles.body.fontSize - 2 }]}>
+            📅 {tarea.fechaVencimiento.toLocaleDateString()}
+          </Text>
         )}
       </View>
     </TouchableOpacity>
@@ -73,15 +76,56 @@ export const TaskItem: React.FC<Props> = ({
 };
 
 const styles = StyleSheet.create({
-  container: { borderRadius: 16, padding: 16, marginBottom: 12, borderWidth: 1 },
-  topSection: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
-  titleSection: { flexDirection: 'row', alignItems: 'center', flex: 1, marginRight: 12 },
-  checkbox: { width: 22, height: 22, marginRight: 12 },
-  title: { fontSize: 17, fontWeight: '600', flex: 1 },
-  titleCompleted: { textDecorationLine: 'line-through', color: '#999' },
-  actionsContainer: { flexDirection: 'row', gap: 8 },
-  actionButton: { padding: 6, backgroundColor: 'transparent', borderRadius: 8 },
-  bottomSection: { marginTop: 2, paddingLeft: 34 },
-  description: { fontSize: 14, marginBottom: 6, lineHeight: 20 },
-  date: { fontSize: 13, color: '#007AFF', marginTop: 2 },
+  container: {
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 12,
+    borderWidth: 1,
+  },
+  topSection: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  titleSection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    marginRight: 12,
+  },
+  checkbox: {
+    width: 22,
+    height: 22,
+    marginRight: 12,
+  },
+  title: {
+    fontWeight: '600',
+    flex: 1,
+  },
+  titleCompleted: {
+    textDecorationLine: 'line-through',
+    color: '#999',
+  },
+  actionsContainer: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  actionButton: {
+    padding: 6,
+    backgroundColor: 'rgba(0,0,0,0.05)',
+    borderRadius: 8,
+  },
+  bottomSection: {
+    marginTop: 2,
+    paddingLeft: 34,
+  },
+  description: {
+    marginBottom: 6,
+    lineHeight: 20,
+  },
+  date: {
+    color: '#007AFF',
+    marginTop: 2,
+  },
 });

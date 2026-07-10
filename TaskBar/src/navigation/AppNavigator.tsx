@@ -1,9 +1,9 @@
-// src/navigation/AppNavigator.tsx
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useTheme } from '../context/ThemeContext';
+import { StatusBar } from 'expo-status-bar';
 
 import { HomeScreen } from '../screens/HomeScreen';
 import { CalendarScreen } from '../screens/CalendarScreen';
@@ -27,27 +27,41 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<MainTabParamList>();
 
 function MainTabs() {
-  const { theme } = useTheme();
+  const { theme, isDark } = useTheme();
+
   return (
-    <Tab.Navigator
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
-          let iconName: keyof typeof MaterialIcons.glyphMap = 'list';
-          if (route.name === 'Tareas') iconName = 'list';
-          else if (route.name === 'Calendario') iconName = 'calendar-today';
-          else if (route.name === 'Ajustes') iconName = 'settings';
-          return <MaterialIcons name={iconName} size={size} color={color} />;
-        },
-        tabBarActiveTintColor: '#007000',
-        tabBarInactiveTintColor: theme.textSecondary,
-        tabBarStyle: { backgroundColor: theme.background, borderTopColor: theme.border },
-        headerShown: false,
-      })}
-    >
-      <Tab.Screen name="Tareas" component={HomeScreen} />
-      <Tab.Screen name="Calendario" component={CalendarScreen} />
-      <Tab.Screen name="Ajustes" component={SettingsScreen} />
-    </Tab.Navigator>
+    <>
+      <StatusBar style={isDark ? 'light' : 'dark'} />
+      
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color }) => {
+            let iconName: keyof typeof MaterialIcons.glyphMap = 'list';
+            if (route.name === 'Tareas') iconName = 'list';
+            else if (route.name === 'Calendario') iconName = 'calendar-today';
+            else if (route.name === 'Ajustes') iconName = 'settings';
+            return (
+              <MaterialIcons
+                name={iconName}
+                size={26}
+                color={focused ? '#5d8a6e' : color}
+              />
+            );
+          },
+          tabBarActiveTintColor: '#5d8a6e',
+          tabBarInactiveTintColor: theme.textSecondary,
+          tabBarStyle: {
+            backgroundColor: theme.background,
+            borderTopColor: theme.border,
+          },
+          headerShown: false,
+        })}
+      >
+        <Tab.Screen name="Tareas" component={HomeScreen} />
+        <Tab.Screen name="Calendario" component={CalendarScreen} />
+        <Tab.Screen name="Ajustes" component={SettingsScreen} />
+      </Tab.Navigator>
+    </>
   );
 }
 
