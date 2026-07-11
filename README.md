@@ -5,7 +5,7 @@
 <h1 style="color: #ffffff; margin-top: 10px;">TaskBar</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-1.0.0-blue?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Version-1.0.1-blue?style=for-the-badge" />
   <img src="https://img.shields.io/badge/Expo_SDK-54-blue?style=for-the-badge" />
   <img src="https://img.shields.io/badge/React-19.1.0-61DAFB?style=for-the-badge" />
   <img src="https://img.shields.io/badge/React_Native-0.81.5-61DAFB?style=for-the-badge" />
