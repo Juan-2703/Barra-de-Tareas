@@ -66,7 +66,8 @@ TaskBar/
 │   ├── data/
 │   ├── assets/
 │   ├── screens/
-│   └── components/
+│   ├── components/
+│   └── utils/
 ├── App.tsx
 ├── app.json
 ├── package.json
@@ -85,13 +86,13 @@ TaskBar/
 | **`assets/`** | Iconos y recursos estáticos. |
 | **`screens/`** | Vistas principales (`Home`, `Create`, `Edit`, `Calendar`, `Settings`). |
 | **`components/`** | Componentes reutilizables (`TaskItem`, `CustomButton`, `CustomAlert`). |
-
+| **`utils/`** | Carpeta para funciones auxiliares reutilizables. |
 # 4. Librerias Utilizadas
 
 | Librería | Razón de uso |
 | :--- | :--- |
 | **React Navigation** | Navegación profesional con Bottom Tabs y Stack Navigator. |
-| **`@react-native-community/datetimepicker`** | Selector de fecha nativo para iOS y Android. |
+| **`react-native-calendars`** | Selector de fecha compatible para iOS y Android . |
 | **`expo-checkbox`** | Checkbox estilizado y funcional para marcar tareas. |
 | **`expo-vector-icons`** | Iconos profesionales para la interfaz de usuario. |
 | **`react-native-safe-area-context`** | Asegura que el contenido respete los bordes seguros de la pantalla. |
