@@ -3,21 +3,24 @@ import { View, Text, StyleSheet, Switch, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '../context/ThemeContext';
 import { useFontSize } from '../context/FontSizeContext';
+import { getFontSize } from '../utils/fontSizes';
 
 export const SettingsScreen = () => {
   const { theme, isDark, toggleTheme } = useTheme();
   const { fontSize, setFontSize } = useFontSize();
+
+  const currentFontSize = getFontSize(fontSize);
+
+  const fontSizeLabel = 
+    fontSize === 'small' ? 'Pequeño' :
+    fontSize === 'large' ? 'Grande' : 'Mediano';
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
       <View style={styles.content}>
         <Text style={[styles.title, { color: theme.text, fontSize: 28 }]}>Ajustes</Text>
 
-        {/* TARJETA 1: Modo Oscuro */}
         <View style={[styles.card, { backgroundColor: theme.card, borderColor: theme.border }]}>
-          <Text style={[styles.cardTitle, { color: theme.textSecondary, fontSize: 14 }]}>
-            APARIENCIA
-          </Text>
           <View style={styles.row}>
             <Text style={[styles.label, { color: theme.text }]}>Modo Oscuro</Text>
             <Switch
@@ -27,12 +30,11 @@ export const SettingsScreen = () => {
               thumbColor={isDark ? '#fff' : '#f4f3f4'}
             />
           </View>
-        </View>
 
-        {/* TARJETA 2: Tamaño de texto */}
-        <View style={[styles.card, { backgroundColor: theme.card, borderColor: theme.border }]}>
-          <Text style={[styles.cardTitle, { color: theme.textSecondary, fontSize: 14 }]}>
-            TAMAÑO DE TEXTO
+          <View style={styles.separator} />
+
+          <Text style={[styles.sectionLabel, { color: theme.textSecondary, fontSize: 16 }]}>
+            Tamaño de letra
           </Text>
           <View style={styles.sizeContainer}>
             <TouchableOpacity
@@ -54,6 +56,16 @@ export const SettingsScreen = () => {
               <Text style={[styles.sizeText, { color: theme.text }]}>Grande</Text>
             </TouchableOpacity>
           </View>
+
+
+          <View style={styles.exampleContainer}>
+            <Text style={[styles.exampleTitle, { color: theme.text, fontSize: currentFontSize + 6 }]}>
+              Texto de Ejemplo
+            </Text>
+            <Text style={[styles.exampleText, { color: theme.textSecondary, fontSize: currentFontSize }]}>
+              Este texto cambia de tamaño segun tu elección.
+            </Text>
+          </View>
         </View>
       </View>
     </SafeAreaView>
@@ -68,19 +80,23 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     borderWidth: 1,
     padding: 16,
-    marginBottom: 20,
-  },
-  cardTitle: {
-    fontWeight: '600',
-    letterSpacing: 1,
-    marginBottom: 12,
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingVertical: 8,
   },
   label: { fontSize: 18, fontWeight: '500' },
+  separator: {
+    height: 1,
+    backgroundColor: '#e0e0e0',
+    marginVertical: 12,
+  },
+  sectionLabel: {
+    fontWeight: '600',
+    marginBottom: 8,
+  },
   sizeContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -95,4 +111,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#5d8a6e',
   },
   sizeText: { fontSize: 16, fontWeight: '500' },
+  exampleContainer: {
+    marginTop: 12,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: '#e0e0e0',
+    alignItems: 'center',
+  },
+  exampleTitle: {
+    fontWeight: 'bold',
+    marginBottom: 4,
+  },
+  exampleText: {
+    textAlign: 'center',
+  },
 });
