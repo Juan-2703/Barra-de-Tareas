@@ -1,6 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Modal, ScrollView } from 'react-native';
 import { useTheme } from '../context/ThemeContext';
+import { useFontSize } from '../context/FontSizeContext';
+import { getFontSize } from '../utils/fontSizes';
 
 interface Props {
   visible: boolean;
@@ -13,6 +15,10 @@ interface Props {
 
 export const CustomAlert: React.FC<Props> = ({ visible, title, message, onClose, onConfirm, hideConfirmButton }) => {
   const { theme } = useTheme();
+  const { fontSize } = useFontSize();
+
+  const currentFontSize = getFontSize(fontSize);
+
   if (!visible) return null;
 
   return (
@@ -24,17 +30,26 @@ export const CustomAlert: React.FC<Props> = ({ visible, title, message, onClose,
     >
       <View style={styles.overlay}>
         <View style={[styles.alertBox, { backgroundColor: theme.card, borderColor: theme.border }]}>
-          <Text style={[styles.title, { color: theme.text }]}>{title}</Text>
-          <Text style={[styles.message, { color: theme.textSecondary }]}>{message}</Text>
+          <Text style={[styles.title, { color: theme.text, fontSize: currentFontSize + 4 }]}>{title}</Text>
+          
+          <ScrollView
+            style={{ maxHeight: 300 }}
+            showsVerticalScrollIndicator={true}
+            contentContainerStyle={{ paddingBottom: 12 }}
+          >
+            <Text style={[styles.message, { color: theme.textSecondary, fontSize: currentFontSize }]}>
+              {message}
+            </Text>
+          </ScrollView>
           
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={onClose}>
-              <Text style={[styles.buttonText, { color: theme.text }]}>Cerrar</Text>
+              <Text style={[styles.buttonText, { color: theme.text, fontSize: currentFontSize }]}>Cerrar</Text>
             </TouchableOpacity>
 
             {onConfirm && !hideConfirmButton && (
               <TouchableOpacity style={[styles.button, styles.confirmButton, { backgroundColor: theme.header }]} onPress={onConfirm}>
-                <Text style={[styles.buttonText, { color: '#fff' }]}>Eliminar</Text>
+                <Text style={[styles.buttonText, { color: '#fff', fontSize: currentFontSize }]}>Eliminar</Text>
               </TouchableOpacity>
             )}
           </View>
@@ -65,12 +80,10 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   title: {
-    fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 12,
   },
   message: {
-    fontSize: 16,
     textAlign: 'center',
     marginBottom: 20,
   },
@@ -95,7 +108,6 @@ const styles = StyleSheet.create({
     borderWidth: 0,
   },
   buttonText: {
-    fontSize: 16,
     fontWeight: '600',
   },
 });

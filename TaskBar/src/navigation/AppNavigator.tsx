@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useTheme } from '../context/ThemeContext';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 
 import { HomeScreen } from '../screens/HomeScreen';
@@ -28,6 +29,7 @@ const Tab = createBottomTabNavigator<MainTabParamList>();
 
 function MainTabs() {
   const { theme, isDark } = useTheme();
+  const insets = useSafeAreaInsets();
 
   return (
     <>
@@ -43,7 +45,7 @@ function MainTabs() {
             return (
               <MaterialIcons
                 name={iconName}
-                size={26}
+                size={28}
                 color={focused ? '#5d8a6e' : color}
               />
             );
@@ -53,6 +55,13 @@ function MainTabs() {
           tabBarStyle: {
             backgroundColor: theme.background,
             borderTopColor: theme.border,
+            height: 70 + insets.bottom, // ✅ Altura dinámica según los botones del sistema
+            paddingBottom: insets.bottom, // ✅ Evita que la barra tape los botones
+          },
+          tabBarLabelStyle: {
+            fontSize: 14,
+            fontWeight: '600',
+            marginBottom: 5,
           },
           headerShown: false,
         })}

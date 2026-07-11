@@ -5,7 +5,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Task } from '../types/Task';
 import { useTheme } from '../context/ThemeContext';
 import { useFontSize } from '../context/FontSizeContext';
-import { getFontStyles } from '../utils/fontStyles';
+import { getFontSize } from '../utils/fontSizes';
 
 interface Props {
   tarea: Task;
@@ -18,7 +18,8 @@ interface Props {
 export const TaskItem: React.FC<Props> = ({ tarea, onToggleComplete, onEdit, onDeleteRequest, onPress }) => {
   const { theme } = useTheme();
   const { fontSize } = useFontSize();
-  const fontStyles = getFontStyles(fontSize);
+
+  const currentFontSize = getFontSize(fontSize);
 
   const handleToggle = useCallback(() => onToggleComplete(tarea.id), [tarea.id, onToggleComplete]);
   const handleEdit = useCallback(() => onEdit(tarea.id), [tarea.id, onEdit]);
@@ -36,13 +37,13 @@ export const TaskItem: React.FC<Props> = ({ tarea, onToggleComplete, onEdit, onD
           <Checkbox
             value={tarea.completada}
             onValueChange={handleToggle}
-            color={tarea.completada ? '#007AFF' : undefined}
+            color={tarea.completada ? '#00882d' : undefined}
             style={styles.checkbox}
           />
           <Text
             style={[
               styles.title, 
-              { color: theme.text, fontSize: fontStyles.title.fontSize },
+              { color: theme.text, fontSize: currentFontSize + 4 },
               tarea.completada && styles.titleCompleted
             ]}
             numberOfLines={1}
@@ -52,7 +53,7 @@ export const TaskItem: React.FC<Props> = ({ tarea, onToggleComplete, onEdit, onD
         </View>
         <View style={styles.actionsContainer}>
           <TouchableOpacity onPress={handleEdit} style={styles.actionButton}>
-            <MaterialIcons name="edit" size={22} color="#4CAF50" />
+            <MaterialIcons name="edit" size={22} color="#0d61af" />
           </TouchableOpacity>
           <TouchableOpacity onPress={handleDeleteRequest} style={styles.actionButton}>
             <MaterialIcons name="delete" size={22} color="#f44336" />
@@ -61,13 +62,13 @@ export const TaskItem: React.FC<Props> = ({ tarea, onToggleComplete, onEdit, onD
       </View>
       <View style={styles.bottomSection}>
         {tarea.descripcion && (
-          <Text style={[styles.description, { color: theme.textSecondary, fontSize: fontStyles.body.fontSize }]} numberOfLines={3}>
+          <Text style={[styles.description, { color: theme.textSecondary, fontSize: currentFontSize }]} numberOfLines={3}>
             {tarea.descripcion}
           </Text>
         )}
         {tarea.fechaVencimiento && (
-          <Text style={[styles.date, { fontSize: fontStyles.body.fontSize - 2 }]}>
-            📅 {tarea.fechaVencimiento.toLocaleDateString()}
+          <Text style={[styles.date, { fontSize: currentFontSize - 2 }]}>
+            Fecha Limite: {tarea.fechaVencimiento.toLocaleDateString()}
           </Text>
         )}
       </View>
@@ -112,8 +113,8 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   actionButton: {
-    padding: 6,
-    backgroundColor: 'rgba(0,0,0,0.05)',
+    padding: 4,
+    backgroundColor: 'transparent',
     borderRadius: 8,
   },
   bottomSection: {

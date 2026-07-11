@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { useTheme } from '../context/ThemeContext';
 import { useFontSize } from '../context/FontSizeContext';
-import { getFontStyles } from '../utils/fontStyles';
+import { getFontSize } from '../utils/fontSizes';
 
 interface CustomInputProps {
   label: string;
@@ -13,24 +13,40 @@ interface CustomInputProps {
   numberOfLines?: number;
 }
 
-export const CustomInput: React.FC<CustomInputProps> = ({ label, value, onChangeText, placeholder, multiline, numberOfLines = 1 }) => {
+export const CustomInput: React.FC<CustomInputProps> = ({ label, value, onChangeText, placeholder, multiline = false, numberOfLines = 1 }) => {
   const { theme } = useTheme();
   const { fontSize } = useFontSize();
-  const fontStyles = getFontStyles(fontSize);
+
+  const currentFontSize = getFontSize(fontSize);
+  const [height, setHeight] = useState(numberOfLines * 20);
 
   return (
     <View style={styles.container}>
-      <Text style={[styles.label, { color: theme.text, fontSize: fontStyles.input.fontSize }]}>
+      <Text style={[styles.label, { color: theme.text, fontSize: currentFontSize }]}>
         {label}
       </Text>
       <TextInput
-        style={[styles.input, { backgroundColor: theme.card, borderColor: theme.border, color: theme.text, fontSize: fontStyles.input.fontSize }]}
+        style={[
+          styles.input, 
+          { 
+            backgroundColor: theme.card, 
+            borderColor: theme.border, 
+            color: theme.text,
+            fontSize: currentFontSize,
+            height: multiline ? height : 'auto',
+          }
+        ]}
         value={value}
         onChangeText={onChangeText}
         placeholder={placeholder}
         placeholderTextColor={theme.textSecondary}
         multiline={multiline}
-        numberOfLines={numberOfLines}
+        numberOfLines={multiline ? undefined : numberOfLines}
+        onContentSizeChange={(e) => {
+          if (multiline) {
+            setHeight(e.nativeEvent.contentSize.height);
+          }
+        }}
       />
     </View>
   );

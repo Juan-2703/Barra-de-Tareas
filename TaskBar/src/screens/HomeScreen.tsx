@@ -1,10 +1,10 @@
-import React, { useCallback, useState, useMemo } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useCallback, useState, useMemo, useEffect } from 'react';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTasks } from '../hooks/useTasks';
 import { useTheme } from '../context/ThemeContext';
 import { useFontSize } from '../context/FontSizeContext';
-import { getFontStyles } from '../utils/fontStyles';
+import { getFontSize } from '../utils/fontSizes';
 import { MaterialIcons } from '@expo/vector-icons';
 import { TaskItem } from '../components/TaskItem';
 import { CustomAlert } from '../components/CustomAlert';
@@ -17,7 +17,15 @@ export const HomeScreen = () => {
   const navigation = useNavigation<HomeScreenNavigationProp>();
   const { theme } = useTheme();
   const { fontSize } = useFontSize();
-  const fontStyles = getFontStyles(fontSize);
+
+  const currentFontSize = getFontSize(fontSize);
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 500);
+    return () => clearTimeout(timer);
+  }, []);
 
   const [deleteAlert, setDeleteAlert] = useState<{
     visible: boolean;
@@ -33,8 +41,6 @@ export const HomeScreen = () => {
   const tareasOrdenadas = useMemo(() => {
     return [...tareas].sort((a, b) => b.fechaCreacion.getTime() - a.fechaCreacion.getTime());
   }, [tareas]);
-
-  const currentFontSize = fontStyles.title.fontSize;
 
   const handleDeleteRequest = useCallback((id: string) => {
     const tarea = tareas.find((t) => t.id === id);
@@ -79,6 +85,17 @@ export const HomeScreen = () => {
     [toggleComplete, handleDeleteRequest, handleOpenDetails, navigation]
   );
 
+  if (isLoading) {
+    return (
+      <View style={[styles.loadingContainer, { backgroundColor: theme.background }]}>
+        <ActivityIndicator size="large" color="#5d8a6e" />
+        <Text style={[styles.loadingText, { color: theme.textSecondary, fontSize: currentFontSize }]}>
+          Cargando tareas...
+        </Text>
+      </View>
+    );
+  }
+
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
       <View style={[styles.header, { backgroundColor: theme.header, paddingTop: 40 }]}>
@@ -91,7 +108,7 @@ export const HomeScreen = () => {
         <View style={[styles.emptyStateContainer, { backgroundColor: theme.background }]}>
           <MaterialIcons name="checklist" size={60} color={theme.textSecondary} />
           <Text style={[styles.emptyStateTitle, { color: theme.text, fontSize: currentFontSize + 4 }]}>
-            ¡Nada por hacer!
+            ¡Nada por hacer! ✨
           </Text>
           <Text style={[styles.emptyStateSubtitle, { color: theme.textSecondary, fontSize: currentFontSize }]}>
             Agrega una tarea tocando el botón verde.
@@ -103,12 +120,12 @@ export const HomeScreen = () => {
           keyExtractor={(item) => item.id}
           extraData={tareasOrdenadas}
           renderItem={renderItem}
-          contentContainerStyle={[styles.listContent, { paddingTop: 20, paddingBottom: 20 }]}
+          contentContainerStyle={[styles.listContent, { paddingTop: 20, paddingBottom: 100 }]}
         />
       )}
 
       <TouchableOpacity
-        style={[styles.fab, { backgroundColor: '#5d8a6e' }]}
+        style={[styles.fab, { backgroundColor: '#0b6b30' }]}
         onPress={() => navigation.navigate('CreateTask')}
       >
         <MaterialIcons name="add" size={30} color="#fff" />
@@ -142,8 +159,6 @@ const styles = StyleSheet.create({
   header: { paddingHorizontal: 20, paddingBottom: 15 },
   headerTitle: { fontWeight: 'bold' },
   listContent: { paddingHorizontal: 20 },
-  
-  // Estilos para el estado vacío (centrado en la pantalla)
   emptyStateContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -160,10 +175,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 24,
   },
-  
   fab: {
     position: 'absolute',
-    bottom: 30,
+    bottom: 40,
     right: 20,
     width: 60,
     height: 60,
@@ -175,5 +189,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 6,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    marginTop: 12,
+    textAlign: 'center',
   },
 });

@@ -2,7 +2,7 @@ import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { useTheme } from '../context/ThemeContext';
 import { useFontSize } from '../context/FontSizeContext';
-import { getFontStyles } from '../utils/fontStyles';
+import { getFontSize } from '../utils/fontSizes';
 
 interface CustomButtonProps {
   title: string;
@@ -13,7 +13,8 @@ interface CustomButtonProps {
 export const CustomButton: React.FC<CustomButtonProps> = ({ title, onPress, variant = 'primary' }) => {
   const { theme } = useTheme();
   const { fontSize } = useFontSize();
-  const fontStyles = getFontStyles(fontSize);
+
+  const currentFontSize = getFontSize(fontSize);
 
   return (
     <TouchableOpacity
@@ -21,14 +22,14 @@ export const CustomButton: React.FC<CustomButtonProps> = ({ title, onPress, vari
         styles.button,
         variant === 'secondary'
           ? { backgroundColor: theme.card, borderColor: theme.border }
-          : { backgroundColor: '#5d8a6e' }, // <--- VERDE DE LA APP
+          : { backgroundColor: '#5d8a6e' },
       ]}
       onPress={onPress}
     >
       <Text
         style={[
           variant === 'secondary' ? styles.secondaryText : styles.primaryText,
-          { fontSize: fontStyles.button.fontSize }
+          { fontSize: currentFontSize }
         ]}
       >
         {title}
