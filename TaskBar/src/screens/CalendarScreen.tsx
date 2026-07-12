@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator, Modal } from 'react-native';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 import { useTasks } from '../hooks/useTasks';
 import { useTheme } from '../context/ThemeContext';
@@ -29,10 +29,12 @@ export const CalendarScreen = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const todayString = new Date().toISOString().split('T')[0];
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [showPicker, setShowPicker] = useState(false);
 
   const tareasDelDia = useMemo(() => {
+    if (!selectedDate) return [];
     return tareas.filter((t) => {
       if (!t.fechaVencimiento) return false;
       const ft = new Date(t.fechaVencimiento);
@@ -88,33 +90,75 @@ export const CalendarScreen = () => {
         >
           <MaterialIcons name="calendar-today" size={24} color="#007AFF" />
           <Text style={[styles.dateText, { color: theme.text, fontSize: currentFontSize }]}>
-            {formatDate(selectedDate)}
+            {selectedDate ? formatDate(selectedDate) : 'Selecciona una fecha'}
           </Text>
         </TouchableOpacity>
       </View>
 
       {showPicker && (
-        <Calendar
-          onDayPress={(day) => {
-            setSelectedDate(new Date(day.dateString + 'T00:00:00'));
-            setShowPicker(false);
-          }}
-          markedDates={{
-            [selectedDate ? getDateString(selectedDate) : '']: { selected: true, selectedColor: '#007AFF' }
-          }}
-          theme={{
-            backgroundColor: theme.background,
-            calendarBackground: theme.card,
-            textSectionTitleColor: theme.text,
-            dayTextColor: theme.text,
-            todayTextColor: '#5d8a6e',
-            selectedDayBackgroundColor: '#5d8a6e',
-            selectedDayTextColor: '#ffffff',
-            arrowColor: '#5d8a6e',
-            monthTextColor: theme.text,
-          }}
-          style={styles.calendar}
-        />
+        <Modal
+          key={isDark ? 'dark' : 'light'}
+          transparent={true}
+          visible={showPicker}
+          animationType="fade"
+          onRequestClose={() => setShowPicker(false)}
+        >
+          <TouchableOpacity
+            style={styles.modalOverlay}
+            activeOpacity={1}
+            onPress={() => setShowPicker(false)}
+          >
+            <View style={[styles.modalContent, { backgroundColor: theme.card, borderColor: theme.border }]}>
+              <Calendar
+                onDayPress={(day) => {
+                  setSelectedDate(new Date(day.dateString + 'T00:00:00'));
+                  setShowPicker(false);
+                }}
+                markedDates={{
+
+                  [todayString]: {
+                    customStyles: {
+                      container: {
+                        borderRadius: 16,
+                      },
+                      text: {
+                      },
+                    },
+                  },
+                  
+                  ...(selectedDate && getDateString(selectedDate) !== todayString
+                    ? {
+                        [getDateString(selectedDate)]: {
+                          selected: true,
+                          selectedColor: '#007AFF',
+                        },
+                      }
+                    : {}),
+                }}
+                markingType="custom"
+                theme={{
+                  backgroundColor: theme.background,
+                  calendarBackground: theme.card,
+                  textSectionTitleColor: theme.text,
+                  dayTextColor: theme.text,
+                  todayTextColor: '#5d8a6e',
+                  arrowColor: '#5d8a6e',
+                  monthTextColor: theme.text,
+                  textDisabledColor: isDark ? '#4d4d4d' : '#d0d0d0',
+                }}
+                style={styles.calendar}
+              />
+              <TouchableOpacity
+                style={[styles.closeButton, { backgroundColor: theme.border }]}
+                onPress={() => setShowPicker(false)}
+              >
+                <Text style={[styles.closeButtonText, { color: theme.text, fontSize: currentFontSize }]}>
+                  Cerrar
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </TouchableOpacity>
+        </Modal>
       )}
 
       <View style={[styles.taskListContainer, { backgroundColor: theme.card, borderColor: theme.border }]}>
@@ -160,4 +204,37 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   calendar: { borderRadius: 12, marginBottom: 20 },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 999,
+  },
+  modalContent: {
+    width: '90%',
+    padding: 20,
+    borderRadius: 16,
+    borderWidth: 1,
+    alignItems: 'center',
+    elevation: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+  },
+  closeButton: {
+    marginTop: 20,
+    paddingVertical: 12,
+    paddingHorizontal: 30,
+    borderRadius: 10,
+  },
+  closeButtonText: {
+    fontWeight: 'bold',
+  },
 });
