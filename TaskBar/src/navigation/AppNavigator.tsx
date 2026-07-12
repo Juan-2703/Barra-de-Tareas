@@ -55,8 +55,8 @@ function MainTabs() {
           tabBarStyle: {
             backgroundColor: theme.background,
             borderTopColor: theme.border,
-            height: 70 + insets.bottom, // ✅ Altura dinámica según los botones del sistema
-            paddingBottom: insets.bottom, // ✅ Evita que la barra tape los botones
+            height: 70 + insets.bottom, 
+            paddingBottom: insets.bottom,
           },
           tabBarLabelStyle: {
             fontSize: 14,

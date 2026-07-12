@@ -29,12 +29,14 @@ export const CalendarScreen = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const todayString = new Date().toISOString().split('T')[0];
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  // 🛠️ Fecha local sin errores de zona horaria
+  const today = new Date();
+  const todayString = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date(todayString + 'T00:00:00'));
   const [showPicker, setShowPicker] = useState(false);
 
   const tareasDelDia = useMemo(() => {
-    if (!selectedDate) return [];
     return tareas.filter((t) => {
       if (!t.fechaVencimiento) return false;
       const ft = new Date(t.fechaVencimiento);
@@ -90,7 +92,7 @@ export const CalendarScreen = () => {
         >
           <MaterialIcons name="calendar-today" size={24} color="#007AFF" />
           <Text style={[styles.dateText, { color: theme.text, fontSize: currentFontSize }]}>
-            {selectedDate ? formatDate(selectedDate) : 'Selecciona una fecha'}
+            {formatDate(selectedDate)}
           </Text>
         </TouchableOpacity>
       </View>
@@ -110,30 +112,24 @@ export const CalendarScreen = () => {
           >
             <View style={[styles.modalContent, { backgroundColor: theme.card, borderColor: theme.border }]}>
               <Calendar
+                current={todayString}
                 onDayPress={(day) => {
                   setSelectedDate(new Date(day.dateString + 'T00:00:00'));
                   setShowPicker(false);
                 }}
                 markedDates={{
-
                   [todayString]: {
                     customStyles: {
-                      container: {
-                        borderRadius: 16,
-                      },
                       text: {
+                        color: '#5d8a6e',
+                        fontWeight: 'bold',
                       },
                     },
                   },
-                  
-                  ...(selectedDate && getDateString(selectedDate) !== todayString
-                    ? {
-                        [getDateString(selectedDate)]: {
-                          selected: true,
-                          selectedColor: '#007AFF',
-                        },
-                      }
-                    : {}),
+                  [getDateString(selectedDate)]: {
+                    selected: true,
+                    selectedColor: '#0b802e',
+                  },
                 }}
                 markingType="custom"
                 theme={{
