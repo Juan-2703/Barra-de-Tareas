@@ -4,3 +4,8 @@ node_modules/
 # Archivos de Expo
 .expo/
 dist/
+
+#variables de entorno
+.env
+*.env
+*.env.local
