@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="./src/assets/icon.png" alt="TaskBar Logo" width="150" />
+<img src="./TaskBar/src/assets/icon.png" alt="TaskBar Logo" width="150" />
 
 # TaskBar
 
