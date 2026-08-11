@@ -1,108 +1,273 @@
-<div align="center" style="background-color: #2f4f4f; padding: 30px; border-radius: 12px; width: 100%;">
+<div align="center">
 
-<img src="./TaskBar/src/assets/icon.png" alt="TaskBar Logo" width="150" />
+<img src="./src/assets/icon.png" alt="TaskBar Logo" width="150" />
 
-<h1 style="color: #ffffff; margin-top: 10px;">TaskBar</h1>
+# TaskBar
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-1.0.1-blue?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Version-1.0.0-blue?style=for-the-badge" />
   <img src="https://img.shields.io/badge/Expo_SDK-54-blue?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/React-19.1.0-61DAFB?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/React_Native-0.81.5-61DAFB?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/React_Native-Mobile-61DAFB?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge" />
 </p>
 
 </div>
 
 ---
 
-### Que es TaskBar?
+## ¿Qué es TaskBar?
 
-**TaskBar** es una aplicación móvil para la gestión de tareas personales, desarrollada con **React Native** y **Expo**.
-Permite crear, editar, eliminar y marcar tareas como completadas. Incluye un calendario integrado para visualizar tareas por fecha de vencimiento y un modo oscuro para adaptarse a las preferencias del usuario.
+**TaskBar** es una aplicación móvil para la gestión de tareas personales, desarrollada con **React Native, Expo y TypeScript**.
+
+Permite crear, editar, eliminar y marcar tareas como completadas, asignar prioridades y fechas límite, utilizar filtros y visualizar las tareas mediante un calendario.
+
+La aplicación cuenta con autenticación de usuarios mediante **Firebase Authentication**, almacenamiento remoto con **Cloud Firestore** y almacenamiento local mediante **SQLite**, permitiendo utilizar las principales funciones de la aplicación incluso sin conexión a Internet.
+
+Cuando la conexión vuelve a estar disponible, las tareas pendientes se sincronizan con Firebase.
+
+También incluye personalización de perfil, foto de usuario, modo oscuro y configuración del tamaño de texto.
 
 ---
 
+# 1. Características principales
 
-# 1. Comandos iniciales para levantar el proyecto
+- Registro e inicio de sesión de usuarios.
+- Gestión completa de tareas (CRUD).
+- Prioridades alta, media y baja.
+- Fechas límite para las tareas.
+- Calendario para consultar tareas por fecha.
+- Filtros por prioridad y estado.
+- Modo oscuro y modo claro.
+- Configuración del tamaño de texto.
+- Edición del nombre de usuario.
+- Foto de perfil mediante cámara o galería.
+- Cambio de contraseña.
+- Almacenamiento local con SQLite.
+- Almacenamiento remoto con Firebase.
+- Funcionamiento sin conexión.
+- Sincronización automática al recuperar Internet.
+- Arquitectura basada en Clean Architecture.
 
+---
 
-## 1.1. Clonar el repositorio (Si usas URL)
+# 2. Comandos iniciales para levantar el proyecto
+
+## 2.1. Clonar el repositorio
 
 ```bash
-git clone https://github.com/Juan-2703/Barra-de-Tareas.git
-cd Barra-de-Tareas
+git clone URL_DEL_REPOSITORIO
 cd TaskBar
 ```
 
-## 1.2. Instalar las dependencias
+## 2.2. Instalar las dependencias
+
 ```bash
 npm install
 ```
 
-## 1.3. Ejecutar el proyecto 
+## 2.3. Configurar variables de entorno
 
-### Para red local 
+Crear un archivo `.env` en la raíz del proyecto tomando como referencia `.env.example`.
+
+```env
+EXPO_PUBLIC_FIREBASE_API_KEY=
+EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN=
+EXPO_PUBLIC_FIREBASE_PROJECT_ID=
+EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET=
+EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
+EXPO_PUBLIC_FIREBASE_APP_ID=
+
+EXPO_PUBLIC_CLOUDINARY_CLOUD_NAME=
+EXPO_PUBLIC_CLOUDINARY_UPLOAD_PRESET=
+```
+
+El archivo `.env` contiene la configuración utilizada por la aplicación y no debe incluirse en el repositorio.
+
+## 2.4. Ejecutar el proyecto
+
+### Red local
+
 ```bash
 npx expo start
 ```
-### Para hostear con túnel 
+
+### Mediante túnel
+
 ```bash
 npx expo start --tunnel
 ```
 
-## 1.4. Abrir la app en tu dispositivo
-- Escanea el código QR con la app Expo Go en tu celular.
-- O presiona 'a' (Android) o 'i' (iOS) en la terminal para abrir el emulador.
+## 2.5. Abrir la aplicación
 
-# 2. Estructura del Proyecto
+- Escanear el código QR mediante Expo Go.
+- Presionar `a` para abrir Android si hay un emulador configurado.
+- También puede ejecutarse mediante una build generada con EAS.
+
+---
+
+# 3. Arquitectura del proyecto
+
+TaskBar utiliza una estructura basada en **Clean Architecture**, separando la aplicación en distintas responsabilidades.
 
 ```text
-TaskBar/
-├── src/
-│   ├── context/
-│   ├── hooks/
-│   ├── navigation/
-│   ├── types/
-│   ├── data/
-│   ├── assets/
-│   ├── screens/
-│   ├── components/
-│   └── utils/
-├── App.tsx
-├── app.json
-├── package.json
-└── README.md
+src/
+├── app/
+├── assets/
+├── config/
+├── core/
+└── modules/
+    ├── Auth/
+    └── Tasks/
+        ├── data/
+        ├── di/
+        ├── domain/
+        └── presentation/
 ```
 
-# 3. Función de cada carpeta
+### Capas principales
 
 | Carpeta | Función |
 | :--- | :--- |
-| **`context/`** | Proveedores de estado global (`TaskContext`, `ThemeContext`). |
-| **`hooks/`** | Hook personalizado para acceder al estado de forma sencilla (`useTasks`). |
-| **`navigation/`** | Configuración de la barra inferior y el apilado de pantallas. |
-| **`types/`** | Interfaces TypeScript para un código seguro y tipado. |
-| **`data/`** | Datos de ejemplo para iniciar la app con tareas predefinidas. |
-| **`assets/`** | Iconos y recursos estáticos. |
-| **`screens/`** | Vistas principales (`Home`, `Create`, `Edit`, `Calendar`, `Settings`). |
-| **`components/`** | Componentes reutilizables (`TaskItem`, `CustomButton`, `CustomAlert`). |
-| **`utils/`** | Carpeta para funciones auxiliares reutilizables. |
-# 4. Librerias Utilizadas
+| `app/` | Rutas y navegación principal mediante Expo Router. |
+| `assets/` | Imágenes, iconos y recursos utilizados por la aplicación. |
+| `config/` | Configuración de Firebase, navegación y tema visual. |
+| `core/` | Componentes, contextos, hooks, servicios y utilidades compartidas. |
+| `modules/` | Módulos funcionales principales de la aplicación. |
 
-| Librería | Razón de uso |
+Dentro del módulo de tareas:
+
+| Capa | Función |
 | :--- | :--- |
-| **React Navigation** | Navegación profesional con Bottom Tabs y Stack Navigator. |
-| **`react-native-calendars`** | Selector de fecha compatible para iOS y Android . |
-| **`expo-checkbox`** | Checkbox estilizado y funcional para marcar tareas. |
-| **`expo-vector-icons`** | Iconos profesionales para la interfaz de usuario. |
-| **`react-native-safe-area-context`** | Asegura que el contenido respete los bordes seguros de la pantalla. |
+| `data/` | Acceso a SQLite, Firebase, DTOs, modelos e implementación de repositorios. |
+| `domain/` | Entidades, interfaces de repositorios y casos de uso. |
+| `presentation/` | Pantallas, componentes y hooks relacionados con la interfaz. |
+| `di/` | Creación e inyección de las dependencias utilizadas por el módulo. |
 
+---
 
-# 5. Integrantes del Grupo
+# 4. Funcionamiento Offline
+
+TaskBar utiliza una estrategia de almacenamiento local y remoto.
+
+Las tareas se almacenan localmente mediante **SQLite**, permitiendo consultar y modificar información aunque el dispositivo no tenga conexión.
+
+Cuando una operación todavía no ha sido enviada al servidor, la tarea mantiene un estado pendiente de sincronización.
+
+```text
+Usuario
+   ↓
+TaskBar
+   ↓
+SQLite
+   ↓
+Sincronización
+   ↓
+Firebase
+```
+
+Al recuperar la conexión a Internet, TaskBar intenta sincronizar automáticamente los cambios pendientes con Firebase.
+
+Esto permite realizar operaciones como:
+
+- Crear tareas sin Internet.
+- Editar tareas sin Internet.
+- Completar tareas sin Internet.
+- Eliminar tareas sin Internet.
+- Mantener los cambios después de cerrar y volver a abrir la aplicación.
+- Sincronizar los cambios cuando la conexión vuelve a estar disponible.
+
+---
+
+# 5. Servicios utilizados
+
+| Tecnología / Servicio | Uso |
+| :--- | :--- |
+| React Native | Desarrollo de la aplicación móvil. |
+| Expo | Entorno y herramientas para desarrollo y compilación. |
+| TypeScript | Tipado y organización del código. |
+| Expo Router | Navegación entre pantallas y tabs. |
+| Firebase Authentication | Registro, inicio de sesión y gestión de usuarios. |
+| Cloud Firestore | Almacenamiento remoto de tareas. |
+| Expo SQLite | Persistencia local de las tareas. |
+| NetInfo | Detección del estado de conexión a Internet. |
+| Cloudinary | Almacenamiento de las fotos de perfil. |
+| react-native-calendars | Calendario y selección de fechas. |
+| AsyncStorage | Persistencia utilizada por la autenticación y configuraciones locales. |
+| Material Icons | Iconografía de la interfaz. |
+| Safe Area Context | Adaptación de la interfaz a las áreas seguras del dispositivo. |
+
+---
+
+# 6. Pantallas principales
+
+TaskBar cuenta con las siguientes pantallas:
+
+**Autenticación**
+- Inicio de sesión.
+- Registro.
+
+**Tareas**
+- Lista de tareas.
+- Crear tarea.
+- Editar tarea.
+- Filtros de tareas.
+
+**Calendario**
+- Selección de fecha.
+- Visualización de las tareas correspondientes al día seleccionado.
+- Identificación visual de prioridades.
+
+**Ajustes**
+- Cambio entre modo claro y oscuro.
+- Configuración del tamaño del texto.
+- Acceso a la cuenta del usuario.
+
+**Cuenta**
+- Edición del nombre.
+- Cambio de foto de perfil.
+- Cambio de contraseña.
+- Cierre de sesión.
+
+---
+
+# 7. Sincronización de tareas
+
+Las tareas pueden presentar diferentes estados internos dependiendo de su sincronización.
+
+```text
+Tarea creada/modificada
+        ↓
+     SQLite
+        ↓
+     Pending
+        ↓
+   Hay Internet
+        ↓
+     Firebase
+        ↓
+      Synced
+```
+
+De esta manera, SQLite funciona como almacenamiento local mientras Firebase permite mantener los datos asociados a cada usuario de forma remota.
+
+---
+
+# 8. Integrantes del grupo
 
 | Integrante | Rol |
 | :--- | :--- |
-| Juan Espetia | Estructura base (Context, Hooks, Navigation, Types) |
-| Isaac Gavidia | Calendario y Formularios (Calendar, Create, Edit) |
-| Sebastian Arista | Componentes y Pantalla de Inicio (Components, HomeScreen) |
-| Milagros Lujan | Ajustes y Tema (Settings, ThemeContext) |
+| Juan Espetia | Arquitectura, contexto, autenticación y sincronización |
+| Isaac Gavidia | Calendario y formularios |
+| Sebastian Arista | Componentes y pantalla de tareas |
+| Milagros Lujan | Ajustes, tema e interfaz |
+
+---
+
+# 9. Plataformas
+
+TaskBar fue desarrollada utilizando React Native y Expo para permitir compatibilidad multiplataforma.
+
+- Android
+- iOS
+
+La aplicación puede ejecutarse durante el desarrollo mediante Expo Go y puede compilarse mediante EAS Build.
