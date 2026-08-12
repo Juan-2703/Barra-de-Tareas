@@ -55,7 +55,8 @@ También incluye personalización de perfil, foto de usuario, modo oscuro y conf
 ## 2.1. Clonar el repositorio
 
 ```bash
-git clone URL_DEL_REPOSITORIO
+git clone https://github.com/Juan-2703/Barra-de-Tareas.git
+cd Barra-de-Tareas
 cd TaskBar
 ```
 
@@ -81,7 +82,7 @@ EXPO_PUBLIC_CLOUDINARY_CLOUD_NAME=
 EXPO_PUBLIC_CLOUDINARY_UPLOAD_PRESET=
 ```
 
-El archivo `.env` contiene la configuración utilizada por la aplicación y no debe incluirse en el repositorio.
+El archivo `.env` contiene la configuración utilizada por la aplicación y no esta incluida en el codigo (Revisar el Documento).
 
 ## 2.4. Ejecutar el proyecto
 
