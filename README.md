@@ -257,10 +257,10 @@ De esta manera, SQLite funciona como almacenamiento local mientras Firebase perm
 
 | Integrante | Rol |
 | :--- | :--- |
-| Juan Espetia | Arquitectura, contexto, autenticación y sincronización |
-| Isaac Gavidia | Calendario y formularios |
-| Sebastian Arista | Componentes y pantalla de tareas |
-| Milagros Lujan | Ajustes, tema e interfaz |
+| Juan Espetia | Persistencia y Sincronización |
+| Isaac Gavidia |Interfaz y Configuración |
+| Sebastian Arista |Autenticación y Perfil|
+| Milagros Lujan | Gestión de Tareas |
 
 ---
 
